@@ -1,0 +1,1 @@
+python style.py --ddim_steps 100 --n_iter 1 --H 512 --W 512 --scale 5.0 --rho 15 --tt 1 --prompt "a cat wearing glasses"
