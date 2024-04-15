@@ -38,7 +38,20 @@ To set up the environment for MPGD using Docker, follow these steps:
 
 
 ## Downloading Pretrained Models
-TODO
+1. **Linear Inverse Problem Solving**
+   For linear inverse problem sovling, we use the pretrained pixel space FFHQ diffusion model provided by <a href="https://github.com/DPS2022/diffusion-posterior-sampling">DPS</a>. For manifold projection, we use the first stage models of the latent diffusion provided by <a href="https://github.com/CompVis/latent-diffusion">Latent Diffusion</a>.
+   You can download the pixel space FFHQ diffusion model <a href="https://drive.google.com/drive/folders/1jElnRoFv7b31fG0v6pTSQkelbSX3xGZh">here</a> and place it in `linear_inv/models/`.
+   ```
+   cd linear_inv
+   mkdir models
+   mv {DOWNLOAD_DIR}/ffqh_10m.pt ./models/
+   ```
+   For VQ models, you can download them <a href="https://github.com/CompVis/latent-diffusion?tab=readme-ov-file#pretrained-ldms">here</a> and place them in the respective folders in `nonlinear/SD_style/models/ldm/`. For example, for CelebA-HQ model, you can do
+   ```
+   cd nonlinear/SD_style/models/ldm/celeba256/
+   mv {DOWNLOAD_DIR}/celeba.zip ./models/
+   unzip celeba.zip
+   ```
 
 
 ## Running Inference
