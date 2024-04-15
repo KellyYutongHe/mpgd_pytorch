@@ -2,7 +2,7 @@
 The official PyTorch implementation of <a href="https://arxiv.org/abs//2311.16424">Manifold Preserving Guided Diffusion (MPGD)</a>. 
 This repository has python implementation of MPGD, a training-free sampling method for both pre-trained pixel-space diffusion models and latent diffusion models in a variety of conditional generation applications.
 Different guidance modalities we demonstrate are linear inverse problem solving (Gaussian deblurring and super resolution), FaceID guided generation CLIP guided generation and style guided generation with both pixel space diffusion models and latent diffusion models.
-Our implementation is based on the <a href="https://github.com/DPS2022/diffusion-posterior-sampling">DPS</a> and  <a href="https://github.com/vvictoryuki/FreeDoM">FreeDoM</a> codebase, which are derived from the <a href="https://github.com/CompVis/stable-diffusion">Stable Diffusion</a> and <a href="https://github.com/ermongroup/ddim">DDIM</a> codebase.
+Our implementation is based on the <a href="https://github.com/DPS2022/diffusion-posterior-sampling">DPS</a> and <a href="https://github.com/vvictoryuki/FreeDoM">FreeDoM</a> codebase, which are derived from the <a href="https://github.com/CompVis/stable-diffusion">Stable Diffusion</a> and <a href="https://github.com/ermongroup/ddim">DDIM</a> codebase.
 
 
 ## Installations
@@ -39,20 +39,34 @@ To set up the environment for MPGD using Docker, follow these steps:
 
 ## Downloading Pretrained Models
 1. **Linear Inverse Problem Solving**
-   For linear inverse problem sovling, we use the pretrained pixel space FFHQ diffusion model provided by <a href="https://github.com/DPS2022/diffusion-posterior-sampling">DPS</a>. For manifold projection, we use the first stage models of the latent diffusion provided by <a href="https://github.com/CompVis/latent-diffusion">Latent Diffusion</a>.
+   
+   For linear inverse problem sovling, we use the pretrained pixel space FFHQ diffusion model provided by <a href="https://github.com/DPS2022/diffusion-posterior-sampling">DPS</a>. For manifold projection, we use the first stage models (VQGAN) of the latent diffusion provided by <a href="https://github.com/CompVis/latent-diffusion">Latent Diffusion</a>.
    You can download the pixel space FFHQ diffusion model <a href="https://drive.google.com/drive/folders/1jElnRoFv7b31fG0v6pTSQkelbSX3xGZh">here</a> and place it in `linear_inv/models/`.
    ```
    cd linear_inv
    mkdir models
    mv {DOWNLOAD_DIR}/ffqh_10m.pt ./models/
    ```
-   For VQ models, you can download them <a href="https://github.com/CompVis/latent-diffusion?tab=readme-ov-file#pretrained-ldms">here</a> and place them in the respective folders in `nonlinear/SD_style/models/ldm/`. For example, for CelebA-HQ model, you can do
+   For VQGAN models, you can download them <a href="https://github.com/CompVis/latent-diffusion?tab=readme-ov-file#pretrained-ldms">here</a> and place them in the respective folders in `nonlinear/SD_style/models/ldm/`. For example, for CelebA-HQ model, you can do
    ```
    cd nonlinear/SD_style/models/ldm/celeba256/
    mv {DOWNLOAD_DIR}/celeba.zip ./models/
    unzip celeba.zip
    ```
+2. **FaceID & CLIP Guidance Human Face Generation**
 
+   For these two experiments, please follow the previous instruction to download the VQGAN models for manifold projection. For the pixel space human face diffusion model, we use the same checkpoints as <a href="https://github.com/vvictoryuki/FreeDoM">FreeDoM</a>, and you can download the model <a href="https://drive.google.com/drive/folders/1jElnRoFv7b31fG0v6pTSQkelbSX3xGZh">here</a> and place them in the directory below:
+   ```
+   cd nonlinear/Face-GD/
+   mkdir exp/models
+   mv {DOWNLOAD_DIR}/celeba_hq.ckpt exp/models/
+   mv {DOWNLOAD_DIR}/model_ir_se50.pth exp/models/
+   ```
+   The CLIP model should be downloaded automatically when you run the scripts.
+
+3. **Style Guided Stable Diffusion**
+
+   Please download the pretrained Stable Diffusion 1.4 checkpoint <a href="https://huggingface.co/CompVis">here</a> and then place it in `nonlinear/SD_style/models/ldm/stable-diffusion-v1/`.
 
 ## Running Inference
 For linear inverse problem sovling, please refer to subdirectory `linear_inv/`. For pixel space FaceID guidance and CLIP guidance with pretrained CelebA-HQ model, please refer to subdirectory `nonlinear/Face-GD/`. For style guided Stable Diffusion, please refer to subdirectory `nonlinear/SD_style/`. Inside each subdirectory, there are detailed instructions on how to run each task.
