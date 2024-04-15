@@ -16,7 +16,25 @@ pip install -e git+https://github.com/openai/CLIP.git@main#egg=clip
 pip install -e .
 ```
 ### Docker Installation
-TODO
+To set up the environment for MPGD using Docker, follow these steps:
+
+1. **Build the Docker Image**:
+   From the directory containing the Dockerfile, execute the following command:
+   ```bash
+   docker build -t mpgd .
+   ```
+
+2. **Run the Docker Container**:
+   To start the container with GPU support, use the run_docker_container.sh script:
+   ```bash
+   bash run_docker_container.sh
+   ```
+
+3. **Activate the Conda Environment**:
+   Once inside the container, activate the Conda environment by running:
+   ```bash
+   conda activate mpgd
+   ```
 
 
 ## Downloading Pretrained Models

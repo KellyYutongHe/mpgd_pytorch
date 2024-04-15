@@ -1,41 +1,31 @@
+# Using CUDA and cuDNN enabled Ubuntu base image
 FROM nvidia/cuda:11.5.2-cudnn8-devel-ubuntu20.04
 
-# Install basic utilities
-RUN apt-get clean && \
-    apt-get -y update && \
-    apt-get install -y --no-install-recommends \
-    # add basic apt packages
-	&& apt-get -y install nano wget curl git zip unzip \
-	&& apt-get -y install ca-certificates sudo bzip2 libx11-6 \
-    && apt-get clean \ 
-    && rm -rf /var/lib/apt/lists/*
+# Set environment variables to minimize layer usage and make them available globally
+ENV CONDA_AUTO_UPDATE_CONDA=false \
+    LC_CTYPE="C.UTF-8" \
+    PATH=/opt/miniconda/bin:/opt/conda/envs/mpgd/bin:$PATH
 
-# Install Miniconda and Python 3.8
-ENV CONDA_AUTO_UPDATE_CONDA=false
-ENV PATH=/opt/miniconda/bin:$PATH
+# Pass the host timezone as a build argument
+ARG TZ=UTC
 
-RUN curl -Lo ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-py39_4.12.0-Linux-x86_64.sh
-RUN chmod +x ~/miniconda.sh
-RUN ~/miniconda.sh -b -p /opt/miniconda
-RUN rm ~/miniconda.sh
-# RUN conda update -n base -c defaults conda
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# RUN conda install -y python==3.9
+# Install system packages, Miniconda, and additional dependencies in a single RUN command
+RUN apt update && apt install -y --no-install-recommends \
+        nano wget curl git zip unzip \
+        ca-certificates sudo bzip2 libx11-6 libopencv-dev screen \
+    && apt clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && curl -Lo /tmp/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-py39_4.12.0-Linux-x86_64.sh \
+    && chmod +x /tmp/miniconda.sh \
+    && /tmp/miniconda.sh -b -p /opt/miniconda \
+    && rm /tmp/miniconda.sh \
+    && echo "conda init bash" >> ~/.bashrc \
+    && echo "conda activate mpgd" >> ~/.bashrc
 
+# Copy the Conda environment file and create the environment
 ARG CONDA_YAML="./environment.yaml"
 COPY $CONDA_YAML /tmp/conda_packages.yaml
-
-RUN conda env create -f /tmp/conda_packages.yaml
-RUN conda clean -ya
-
-RUN echo "conda init bash" >> ~/.bashrc
-RUN echo "conda activate mpgd" >> ~/.bashrc
-ENV PATH /opt/conda/envs/mpgd/bin:$PATH
-# RUN conda update -n ddrm -c defaults conda && conda clean -ya
-
-# RUN conda install -n base -y -c conda-forge ipykernel matplotlib seaborn
-# RUN conda install -n base -y -c conda-forge torchmetrics
-
-
-# so that soundfile module can read filename with not ascii code.
-ENV LC_CTYPE "C.UTF-8"
+RUN conda env create -f /tmp/conda_packages.yaml \
+    && conda clean -ya
