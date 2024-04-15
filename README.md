@@ -55,7 +55,7 @@ To set up the environment for MPGD using Docker, follow these steps:
    ```
 2. **FaceID & CLIP Guidance Human Face Generation**
 
-   For these two experiments, please follow the previous instruction to download the VQGAN models for manifold projection. For the pixel space human face diffusion model, we use the same checkpoints as <a href="https://github.com/vvictoryuki/FreeDoM">FreeDoM</a>, and you can download the model <a href="https://drive.google.com/drive/folders/1jElnRoFv7b31fG0v6pTSQkelbSX3xGZh">here</a> and place them in the directory below:
+   For these two experiments, please follow the previous instruction to download the VQGAN models for manifold projection. For the pixel space human face diffusion model, we use the same checkpoints as <a href="https://github.com/vvictoryuki/FreeDoM">FreeDoM</a>, and you can download the both the CelebA-HQ diffusion model and the ArcFace model <a href="https://drive.google.com/drive/folders/1Szb-n-FGMb_c6dIuqYmdpcvNrc-8GmbD?usp=sharing">here</a> and place them in the directory below:
    ```
    cd nonlinear/Face-GD/
    mkdir exp/models
