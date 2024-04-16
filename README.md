@@ -50,7 +50,7 @@ To set up the environment for MPGD using Docker, follow these steps:
    For VQGAN models, you can download them <a href="https://github.com/CompVis/latent-diffusion?tab=readme-ov-file#pretrained-ldms">here</a> and place them in the respective folders in `nonlinear/SD_style/models/ldm/`. For example, for CelebA-HQ model, you can do
    ```
    cd nonlinear/SD_style/models/ldm/celeba256/
-   mv {DOWNLOAD_DIR}/celeba.zip ./models/
+   mv {DOWNLOAD_DIR}/celeba.zip .
    unzip celeba.zip
    ```
 2. **FaceID & CLIP Guidance Human Face Generation**

@@ -1,0 +1,11 @@
+# Common large file formats
+*.zip
+*.pth
+*.ckpt
+*.pt
+
+# Additional types
+*.log
+*.tmp
+*__pycache__/
+*.py[cod]

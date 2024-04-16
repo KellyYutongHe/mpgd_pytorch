@@ -29,3 +29,14 @@ ARG CONDA_YAML="./environment.yaml"
 COPY $CONDA_YAML /tmp/conda_packages.yaml
 RUN conda env create -f /tmp/conda_packages.yaml \
     && conda clean -ya
+
+# Copy your local directory to the container
+COPY ./nonlinear /workspace/nonlinear
+
+# Install custom Python packages and set up project
+RUN . /opt/miniconda/etc/profile.d/conda.sh \
+    && conda activate mpgd \
+    && cd /workspace/nonlinear/SD_style \
+    && pip install -e git+https://github.com/CompVis/taming-transformers.git@master#egg=taming-transformers \
+    && pip install -e git+https://github.com/openai/CLIP.git@main#egg=clip \
+    && pip install -e .
